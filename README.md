@@ -1,11 +1,11 @@
-# 🛡️ ToxGuard — Multilingual Toxic Comment Classifier
+#  ToxGuard — Multilingual Toxic Comment Classifier
 
 > **NeuroLogic '26 · Challenge 3 · Global NLP Datathon**  
 > *Hosted by GGITS Department of AI & Machine Learning*
 
 ---
 
-## 🏆 Results at a Glance
+##  Results at a Glance
 
 | Metric | Value |
 |--------|-------|
@@ -17,17 +17,25 @@
 
 ---
 
-## 📖 What is ToxGuard?
+##  Project Links
 
-ToxGuard is a production-grade **multilingual toxicity detection system** fine-tuned on XLM-RoBERTa — a transformer model pre-trained on 100+ languages. The goal is simple: given any comment in any language, predict whether it is toxic or not.
+- **Live Demo (Gradio):** [https://6630ce21c6dd650e96.gradio.live/](https://6630ce21c6dd650e96.gradio.live/)
+- **Kaggle Notebook:** [https://www.kaggle.com/code/ayushtiwari5410/notebook9f36295db7](https://www.kaggle.com/code/ayushtiwari5410/notebook9f36295db7)
 
-What makes ToxGuard different from a standard classifier is the addition of **Explainable AI (XAI)** — the system doesn't just tell you *whether* a comment is toxic, it tells you *why*, highlighting the exact tokens that influenced the decision. This makes it suitable for real-world content moderation where interpretability matters.
+These links allow reviewers to directly test the deployed application and inspect the full training notebook used for the submission.
 
-Built end-to-end in a single Jupyter notebook — from raw data loading to a live Gradio web demo — the pipeline is clean, reproducible, and competition-ready.
+---
+##  What is ToxGuard?
+
+ToxGuard is a production-grade **multilingual toxicity detection system** fine-tuned on XLM-RoBERTa — a transformer model pre-trained on multiple languages. The goal is simple: given any comment in any language, predict whether it is toxic or not.
+
+The addition of **Explainable AI (XAI)** makes ToxGuard different from a standard classifier- the system doesn't just tell you *whether* a comment is toxic, it tells you *why*, highlighting the exact tokens that influenced the decision. This makes it suitable for real-world content moderation where interpretability matters.
+
+Built end-to-end in a single Kaggle notebook — from raw data loading to a live Gradio web demo — the pipeline is clean, reproducible, and competition-ready.
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```
 ToxGuard/
@@ -40,9 +48,9 @@ ToxGuard/
 
 ---
 
-## 🧠 Model Architecture
+##  Model Architecture
 
-ToxGuard builds on `xlm-roberta-base`, a robust cross-lingual representation model trained on CommonCrawl data across 100+ languages. The architecture is extended with a binary classification head.
+ToxGuard builds on `xlm-roberta-base`, a robust cross-lingual representation model trained on CommonCrawl data across multiple languages. The architecture is extended with a binary classification head.
 
 | Component | Detail |
 |-----------|--------|
@@ -64,68 +72,68 @@ The classifier uses `AutoModelForSequenceClassification` with `num_labels=2`, ma
 
 ---
 
-## ⚙️ Full Pipeline — Flow Diagram
+##  Full Pipeline — Flow Diagram
 
 ```mermaid
 flowchart TD
-    A([🚀 START]) --> B
+    A([ START]) --> B
 
-    subgraph SETUP ["⚙️ SETUP — Cells 1–2"]
-        B["📦 Cell 1\nInstall Dependencies\ntransformers · gradio · lime · seaborn"]
-        B --> C["🖥️ Cell 2\nImports & Hardware Check\nCUDA / CPU auto-detection"]
+    subgraph SETUP [" SETUP — Cells 1–2"]
+        B[" Cell 1\nInstall Dependencies\ntransformers · gradio · lime · seaborn"]
+        B --> C[" Cell 2\nImports & Hardware Check\nCUDA / CPU auto-detection"]
     end
 
     C --> D
 
-    subgraph DATA ["📂 DATA — Cells 3–4"]
-        D["📂 Cell 3\nLoad Dataset\nAuto-detect CSV / Excel from Kaggle paths"]
-        D --> E["📊 Cell 3b\nEDA Visualizations\nBar · Pie chart · Word-length histogram"]
-        E --> F["✂️ Cell 4\nStratified Train / Val Split\n85% train · 15% val · seed 42"]
+    subgraph DATA [" DATA — Cells 3–4"]
+        D[" Cell 3\nLoad Dataset\nAuto-detect CSV / Excel from Kaggle paths"]
+        D --> E[" Cell 3b\nEDA Visualizations\nBar · Pie chart · Word-length histogram"]
+        E --> F[" Cell 4\nStratified Train / Val Split\n85% train · 15% val · seed 42"]
     end
 
     F --> G
 
-    subgraph MODEL ["🧠 MODEL — Cells 5–8"]
-        G["🤗 Cell 5\nLoad xlm-roberta-base\n2-class classification head"]
-        G --> H["🔢 Cell 6\nTokenize & Build Datasets\nToxicDataset · max_len=128 · PyTorch tensors"]
-        H --> I["📐 Cell 7\nCustom Metrics\nROC-AUC + Accuracy per epoch"]
-        I --> J["🚀 Cell 8\nFine-tune Model\n3 epochs · AdamW · lr=2e-5 · fp16"]
+    subgraph MODEL [" MODEL — Cells 5–8"]
+        G[" Cell 5\nLoad xlm-roberta-base\n2-class classification head"]
+        G --> H[" Cell 6\nTokenize & Build Datasets\nToxicDataset · max_len=128 · PyTorch tensors"]
+        H --> I[" Cell 7\nCustom Metrics\nROC-AUC + Accuracy per epoch"]
+        I --> J[" Cell 8\nFine-tune Model\n3 epochs · AdamW · lr=2e-5 · fp16"]
     end
 
     J --> K
 
-    subgraph EVAL ["✅ EVALUATION — Cells 9–9b"]
-        K["✅ Cell 9\nFinal Evaluation\nBest checkpoint by ROC-AUC"]
-        K --> L["📈 Cell 9b\nPlot Diagnostics\nLoss curves · ROC · Confusion Matrix"]
+    subgraph EVAL [" EVALUATION — Cells 9–9b"]
+        K[" Cell 9\nFinal Evaluation\nBest checkpoint by ROC-AUC"]
+        K --> L[" Cell 9b\nPlot Diagnostics\nLoss curves · ROC · Confusion Matrix"]
     end
 
     L --> M
 
-    subgraph OUTPUT ["📤 OUTPUT — Cells 10–11"]
-        M["📤 Cell 10\nGenerate submission.csv\ntoxic_probability per test row"]
-        M --> N["💾 Cell 11\nSave Model & Tokenizer\n./toxguard_final/"]
+    subgraph OUTPUT [" OUTPUT — Cells 10–11"]
+        M[" Cell 10\nGenerate submission.csv\ntoxic_probability per test row"]
+        M --> N[" Cell 11\nSave Model & Tokenizer\n./toxguard_final/"]
     end
 
     N --> O
 
-    subgraph XAI ["🔍 XAI — Cells 12–13"]
-        O["🧩 Cell 12\nLIME Token Explanations\n300 perturbations · red/green importance bars"]
-        O --> P["🔥 Cell 13\nAttention Heatmap\nlast-layer head-0 · token-pair weights"]
+    subgraph XAI [" XAI — Cells 12–13"]
+        O[" Cell 12\nLIME Token Explanations\n300 perturbations · red/green importance bars"]
+        O --> P[" Cell 13\nAttention Heatmap\nlast-layer head-0 · token-pair weights"]
     end
 
     P --> Q
 
-    subgraph DEMO ["🎨 LIVE DEMO — Cell 14"]
-        Q["🌐 Cell 14 — Gradio Web App\nVerdict panel · Probability bar · Live LIME XAI"]
-        Q --> R["🔗 Public HTTPS URL\nvia share=True · valid for 1 week"]
+    subgraph DEMO [" LIVE DEMO — Cell 14"]
+        Q[" Cell 14 — Gradio Web App\nVerdict panel · Probability bar · Live LIME XAI"]
+        Q --> R[" Public HTTPS URL\nvia share=True · valid for 1 week"]
     end
 
-    R --> S([✅ COMPLETE])
+    R --> S([ COMPLETE])
 ```
 
 ---
 
-## 📊 Training Results
+##  Training Results
 
 | Epoch | Training Loss | Validation Loss | ROC-AUC | Accuracy |
 |-------|--------------|----------------|---------|----------|
@@ -139,7 +147,7 @@ The sharp improvement from Epoch 1 → Epoch 2 (+0.2368 ROC-AUC) reflects the tr
 
 ---
 
-## 🔍 Explainability (XAI) — How We Made the Model Transparent
+##  Explainability (XAI) 
 
 One of the most important questions in real-world content moderation is not just *"is this toxic?"* but *"why does the model think so?"* Without explainability, a classifier is a black box — unsuitable for platforms where moderation decisions affect users and must be defensible. ToxGuard addresses this directly with **two complementary XAI techniques**, each answering a different question about the model's behavior.
 
@@ -177,17 +185,17 @@ exp = explainer.explain_instance(text, predict_proba_lime,
 
 #### How to read the output
 The result is a **horizontal bar chart** (`xai_lime.png`) with one bar per important token:
-- 🔴 **Red bar (positive score)** — This word pushes the model toward predicting **Toxic**
-- 🟢 **Green bar (negative score)** — This word pushes the model toward predicting **Non-Toxic**
+- **Red bar (positive score)** — This word pushes the model toward predicting **Toxic**
+- **Green bar (negative score)** — This word pushes the model toward predicting **Non-Toxic**
 - Bar length = magnitude of influence
 
 #### Four examples explained
 | True Label | Text | What LIME Reveals |
 |------------|------|-------------------|
-| 🚨 Toxic | *"I hope she gets what she deserves, stupid bitch."* | "stupid" and "bitch" get large red bars |
-| ✅ Non-Toxic | *"She is one of the best actresses in Bollywood!"* | "best" and "actresses" get green bars |
-| 🚨 Toxic | *"California would be a better place without all the dirty mexicans."* | "dirty" and "mexicans" flagged as red |
-| ✅ Non-Toxic | *"यह एक अच्छा काम है, बधाई हो!"* (Hindi) | Positive Hindi tokens get green bars |
+|  Toxic | *"I hope she gets what she deserves, stupid bitch."* | "stupid" and "bitch" get large red bars |
+|  Non-Toxic | *"She is one of the best actresses in Bollywood!"* | "best" and "actresses" get green bars |
+|  Toxic | *"California would be a better place without all the dirty mexicans."* | "dirty" and "mexicans" flagged as red |
+| Non-Toxic | *"यह एक अच्छा काम है, बधाई हो!"* (Hindi) | Positive Hindi tokens get green bars |
 
 > The Hindi example demonstrates that LIME works across scripts and languages — XLM-RoBERTa's multilingual tokenizer handles Devanagari script natively, and LIME explains the prediction at the subword token level.
 
@@ -236,7 +244,7 @@ Together they provide a **360° view of interpretability**: LIME for accountabil
 
 ---
 
-## 🎨 Gradio Demo — Live Deployment
+##  Gradio Demo — Live Deployment
 
 **Cell 14** of the notebook.
 
@@ -248,7 +256,7 @@ After training and saving the model, ToxGuard is deployed as a fully interactive
 demo.launch(share=True)  # Generates a public HTTPS URL valid for 1 week
 ```
 
-The `share=True` flag tunnels the local Gradio server through Hugging Face's infrastructure and produces a public URL (e.g., `https://xxxxx.gradio.live`) that anyone can access in a browser — no installation required. This is ideal for datathon demos and live judging.
+The `share=True` flag tunnels the local Gradio server through Hugging Face's infrastructure and produces a public URL ( `[https://xxxxx.gradio.live](https://6630ce21c6dd650e96.gradio.live/)`) that anyone can access in a browser — no installation required. This is ideal for datathon demos and live judging.
 
 ---
 
@@ -259,9 +267,9 @@ The interface accepts free-text input in **any language** and returns two output
 #### Output 1 — Toxicity Verdict Panel
 A styled HTML card displaying:
 - **Verdict label** with color-coded severity:
-  - ✅ **Non-Toxic** (green) — probability < 0.3
-  - ⚠️ **Borderline** (amber) — probability 0.3–0.6
-  - 🚨 **Toxic** (red) — probability > 0.6
+  - **Non-Toxic** (green) — probability < 0.3
+  - **Borderline** (amber) — probability 0.3–0.6
+  - **Toxic** (red) — probability > 0.6
 - **Toxicity probability** as a percentage (e.g., `87.43%`)
 - **Visual probability bar** — a filled horizontal bar that grows proportionally with the toxicity score, color-matched to the verdict
 
@@ -319,7 +327,7 @@ The `matplotlib.use('Agg')` backend is critical here — it prevents Gradio from
 
 ---
 
-## 💡 Design Decisions & Innovation Highlights
+##  Design Decisions & Innovation Highlights
 
 - **XLM-RoBERTa over multilingual BERT** — XLM-RoBERTa consistently outperforms mBERT on cross-lingual benchmarks due to its larger training corpus and improved training recipe, making it the right choice for a multilingual toxicity task.
 - **Stratified splitting** — Ensures that the toxic/non-toxic class ratio is consistent between train and validation sets, giving reliable metric estimates regardless of class imbalance.
@@ -333,27 +341,25 @@ The `matplotlib.use('Agg')` backend is critical here — it prevents Gradio from
 
 ---
 
-## 🌐 Multilingual Capability
+##  Multilingual Capability
 
 XLM-RoBERTa's pre-training on 100+ languages provides **zero-shot cross-lingual transfer** — the model understands toxicity patterns in languages it has never been explicitly fine-tuned on for this task.
 
 | Language | Example | Prediction |
 |----------|---------|------------|
-| English | *"I hope she gets what she deserves, stupid bitch."* | 🚨 Toxic |
-| English | *"She is one of the best actresses in Bollywood!"* | ✅ Non-Toxic |
-| Hindi | *"यह एक अच्छा काम है, बधाई हो!"* | ✅ Non-Toxic |
-| English | *"California would be a better place without all the dirty mexicans."* | 🚨 Toxic |
+| English | *"I hope she gets what she deserves, stupid bitch."* |  Toxic |
+| English | *"She is one of the best actresses in Bollywood!"* |  Non-Toxic |
+| Hindi | *"यह एक अच्छा काम है, बधाई हो!"* |  Non-Toxic |
+| English | *"California would be a better place without all the dirty mexicans."* |  Toxic |
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 
 ### On Kaggle (Recommended)
 
 1. Fork this notebook to a Kaggle environment with GPU enabled
-2. Attach the datasets:
-   - `ayushtiwari5410/toxic-labeled` (train)
-   - `ayushtiwari5410/toxic-no-label-evaluation` (test)
+2. Attach the datasets
 3. Run all cells top to bottom
 4. `submission.csv` will be generated automatically
 5. Run **Cell 14** to launch the live Gradio demo — a public URL will appear in the output
@@ -378,7 +384,7 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-## 📦 Generated Output Files
+##  Generated Output Files
 
 | File | Description |
 |------|-------------|
@@ -393,7 +399,7 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Category | Technology |
 |----------|------------|
@@ -409,7 +415,7 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-## 👥 Authors
+## Authors
 
 | Name | GitHub |
 |------|--------|
