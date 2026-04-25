@@ -17,7 +17,7 @@
 
 ---
 
-## 📖 What is ToxGuard?
+##  What is ToxGuard?
 
 ToxGuard is a production-grade **multilingual toxicity detection system** fine-tuned on XLM-RoBERTa — a transformer model pre-trained on 100+ languages. The goal is simple: given any comment in any language, predict whether it is toxic or not.
 
