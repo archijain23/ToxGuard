@@ -64,92 +64,64 @@ The classifier uses `AutoModelForSequenceClassification` with `num_labels=2`, ma
 
 ---
 
-## ⚙️ Full Pipeline — Cell by Cell
+## ⚙️ Full Pipeline — Flow Diagram
 
-The notebook is structured as a self-contained, linear pipeline. Here is a clear walkthrough of each cell and what it does:
+```mermaid
+flowchart TD
+    A([🚀 START]) --> B
 
-### Cell 1 — Install Dependencies
-Installs all required Python packages in one step:
-```bash
-pip install transformers datasets scikit-learn openpyxl accelerate gradio lime matplotlib seaborn
+    subgraph SETUP ["⚙️ SETUP — Cells 1–2"]
+        B["📦 Cell 1\nInstall Dependencies\ntransformers · gradio · lime · seaborn"]
+        B --> C["🖥️ Cell 2\nImports & Hardware Check\nCUDA / CPU auto-detection"]
+    end
+
+    C --> D
+
+    subgraph DATA ["📂 DATA — Cells 3–4"]
+        D["📂 Cell 3\nLoad Dataset\nAuto-detect CSV / Excel from Kaggle paths"]
+        D --> E["📊 Cell 3b\nEDA Visualizations\nBar · Pie chart · Word-length histogram"]
+        E --> F["✂️ Cell 4\nStratified Train / Val Split\n85% train · 15% val · seed 42"]
+    end
+
+    F --> G
+
+    subgraph MODEL ["🧠 MODEL — Cells 5–8"]
+        G["🤗 Cell 5\nLoad xlm-roberta-base\n2-class classification head"]
+        G --> H["🔢 Cell 6\nTokenize & Build Datasets\nToxicDataset · max_len=128 · PyTorch tensors"]
+        H --> I["📐 Cell 7\nCustom Metrics\nROC-AUC + Accuracy per epoch"]
+        I --> J["🚀 Cell 8\nFine-tune Model\n3 epochs · AdamW · lr=2e-5 · fp16"]
+    end
+
+    J --> K
+
+    subgraph EVAL ["✅ EVALUATION — Cells 9–9b"]
+        K["✅ Cell 9\nFinal Evaluation\nBest checkpoint by ROC-AUC"]
+        K --> L["📈 Cell 9b\nPlot Diagnostics\nLoss curves · ROC · Confusion Matrix"]
+    end
+
+    L --> M
+
+    subgraph OUTPUT ["📤 OUTPUT — Cells 10–11"]
+        M["📤 Cell 10\nGenerate submission.csv\ntoxic_probability per test row"]
+        M --> N["💾 Cell 11\nSave Model & Tokenizer\n./toxguard_final/"]
+    end
+
+    N --> O
+
+    subgraph XAI ["🔍 XAI — Cells 12–13"]
+        O["🧩 Cell 12\nLIME Token Explanations\n300 perturbations · red/green importance bars"]
+        O --> P["🔥 Cell 13\nAttention Heatmap\nlast-layer head-0 · token-pair weights"]
+    end
+
+    P --> Q
+
+    subgraph DEMO ["🎨 LIVE DEMO — Cell 14"]
+        Q["🌐 Cell 14 — Gradio Web App\nVerdict panel · Probability bar · Live LIME XAI"]
+        Q --> R["🔗 Public HTTPS URL\nvia share=True · valid for 1 week"]
+    end
+
+    R --> S([✅ COMPLETE])
 ```
-
-### Cell 2 — Imports & Hardware Check
-Loads all libraries and detects whether a CUDA GPU is available. Training automatically switches to CPU if no GPU is found, though GPU is strongly recommended for reasonable training times.
-
-### Cell 3 — Load Dataset
-Auto-detects the training and test dataset files (CSV or Excel) from their Kaggle input directories. Handles both formats transparently. After loading:
-- Drops null rows
-- Strips whitespace from text
-- Casts labels to integers
-- Separates train (labeled) and test (unlabeled) data
-
-**Dataset paths (Kaggle):**
-```
-Train: /kaggle/input/datasets/ayushtiwari5410/toxic-labeled/
-Test:  /kaggle/input/datasets/ayushtiwari5410/toxic-no-label-evaluation/
-```
-
-### Cell 3b — Dataset EDA (Exploratory Visualizations)
-Produces three diagnostic charts saved as `dataset_overview.png`:
-1. **Bar chart** — Sample count per class (Toxic vs. Non-Toxic)
-2. **Pie chart** — Class balance percentage
-3. **Histogram** — Word count distribution per class
-
-### Cell 4 — Train / Validation Split
-Performs a **stratified 85% / 15% split** using `random_state=42` for reproducibility. Stratification ensures the class ratio is preserved in both splits, preventing imbalanced evaluation.
-
-### Cell 5 — Load XLM-RoBERTa
-Downloads `xlm-roberta-base` tokenizer and model from Hugging Face. The model head is initialized for 2-class classification.
-
-### Cell 6 — Tokenize & Build PyTorch Datasets
-Defines a custom `ToxicDataset` class (inheriting from `torch.utils.data.Dataset`) that:
-- Tokenizes text with truncation and padding to `max_length=128`
-- Returns PyTorch tensors ready for the Trainer API
-- Handles both labeled (train/val) and unlabeled (test) splits
-
-### Cell 7 — Custom Metrics
-Defines `compute_metrics()` which computes **ROC-AUC** (from softmax probabilities) and **Accuracy** (from argmax predictions) after every validation epoch.
-
-### Cell 8 — Training
-Configures `TrainingArguments` and launches `Trainer.train()`. Key behaviors:
-- Validates at the end of every epoch
-- Saves the model checkpoint with the best ROC-AUC
-- Uses `fp16` mixed-precision training on GPU for faster training
-- Suppresses reporting to external tools (`report_to='none'`)
-
-### Cell 9 — Final Evaluation
-Runs `trainer.evaluate()` and prints the final metrics table for the best checkpoint.
-
-### Cell 9b — Training Curves, ROC Curve & Confusion Matrix
-Generates and saves three diagnostic visualizations:
-- **Loss curve** — Training loss (step-level) vs. Validation loss (epoch-level)
-- **ROC-AUC & Accuracy per epoch** — With per-epoch score annotations
-- **Confusion Matrix** — Heatmap of TP/TN/FP/FN on the validation set
-- **ROC Curve** — Full receiver operating characteristic curve with AUC fill
-
-Saved as `training_results.png` and `roc_curve.png`.
-
-### Cell 10 — Generate Submission CSV
-Runs inference on the test set using the best model checkpoint. Outputs:
-```
-submission.csv
-├── text              ← original comment text
-└── toxic_probability ← float [0, 1], model's predicted toxicity score
-```
-Also generates `prediction_distribution.png` showing how predictions are distributed around the 0.5 decision boundary.
-
-### Cell 11 — Save Model & Tokenizer
-Persists the fine-tuned model and tokenizer to `./toxguard_final/` using Hugging Face's `save_pretrained()` API, making it portable and reusable.
-
-### Cell 12 — XAI: LIME Token Explanations
-See the [XAI section](#-explainability-xai--how-we-made-the-model-transparent) below for a detailed explanation.
-
-### Cell 13 — XAI: Attention Heatmap
-See the [XAI section](#-explainability-xai--how-we-made-the-model-transparent) below for a detailed explanation.
-
-### Cell 14 — Gradio Demo
-See the [Gradio Deployment section](#-gradio-demo--live-deployment) below for a detailed explanation.
 
 ---
 
@@ -211,7 +183,7 @@ The result is a **horizontal bar chart** (`xai_lime.png`) with one bar per impor
 
 #### Four examples explained
 | True Label | Text | What LIME Reveals |
-|------------|------|--------------------|
+|------------|------|-------------------|
 | 🚨 Toxic | *"I hope she gets what she deserves, stupid bitch."* | "stupid" and "bitch" get large red bars |
 | ✅ Non-Toxic | *"She is one of the best actresses in Bollywood!"* | "best" and "actresses" get green bars |
 | 🚨 Toxic | *"California would be a better place without all the dirty mexicans."* | "dirty" and "mexicans" flagged as red |
@@ -251,11 +223,7 @@ attn = outputs.attentions[-1][0, 0].cpu().numpy()
 
 The token labels on both axes are decoded from the tokenizer's vocabulary, with the `▁` SentencePiece prefix stripped for readability.
 
-#### How to read the output
-The output (`xai_attention.png`) is a side-by-side pair of heatmaps — one for a toxic example, one for a non-toxic example. Darker red cells indicate higher attention between that token pair. Bright clusters around offensive words in the toxic example, compared to more evenly distributed attention in the non-toxic example, show the model has learned to focus on semantically harmful language.
-
 #### Why we used Attention alongside LIME
-Attention and LIME answer different questions:
 
 | | LIME | Attention Heatmap |
 |---|---|---|
@@ -331,8 +299,6 @@ The `matplotlib.use('Agg')` backend is critical here — it prevents Gradio from
 
 ### Built-in Example Inputs
 
-The demo ships with 5 pre-loaded examples to help judges and reviewers test immediately without typing:
-
 | Language | Text |
 |----------|------|
 | English (Non-Toxic) | *"She is one of the best actresses in Bollywood!"* |
@@ -340,10 +306,6 @@ The demo ships with 5 pre-loaded examples to help judges and reviewers test imme
 | Hindi (Non-Toxic) | *"यह एक अच्छा काम है, बधाई हो!"* |
 | English (Toxic) | *"California would be a better place without all the dirty mexicans"* |
 | English (Non-Toxic) | *"The weather today is really beautiful and sunny."* |
-
-These examples were selected to demonstrate multilingual capability (English + Hindi), a range of confidence levels, and both classes — ensuring the demo shows off the full power of ToxGuard in under a minute.
-
----
 
 ### Why Gradio?
 
@@ -373,7 +335,7 @@ These examples were selected to demonstrate multilingual capability (English + H
 
 ## 🌐 Multilingual Capability
 
-XLM-RoBERTa's pre-training on 100+ languages provides **zero-shot cross-lingual transfer** — the model understands toxicity patterns in languages it has never been explicitly fine-tuned on for this task. The Gradio demo includes examples in English and Hindi to demonstrate this capability.
+XLM-RoBERTa's pre-training on 100+ languages provides **zero-shot cross-lingual transfer** — the model understands toxicity patterns in languages it has never been explicitly fine-tuned on for this task.
 
 | Language | Example | Prediction |
 |----------|---------|------------|
