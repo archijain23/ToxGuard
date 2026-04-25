@@ -35,13 +35,20 @@ Built end-to-end in a single Kaggle notebook — from raw data loading to a live
 
 ---
 
-##  Repository Structure
+## Repository Structure
 
-```
+```bash
 ToxGuard/
-├── ToxGuard_v2.ipynb   ← Full training pipeline + XAI + Gradio demo
-├── submission.csv       ← Test set toxicity probabilities (competition output)
-└── README.md            ← This file
+├── ToxGuard_v2.ipynb    ← Full training pipeline + XAI + Gradio demo
+├── submission.csv       ← Competition submission file
+├── output/
+│   ├── dataset_overview.png
+│   ├── training_results.png
+│   ├── roc_curve.png
+│   ├── prediction_distribution.png
+│   ├── xai_lime.png
+│   └── xai_attention.png
+└── README.md            ← Project documentation
 ```
 
 > **Note:** Dataset files are not included in this repository. See the [How to Run](#-how-to-run) section for dataset paths.
@@ -384,19 +391,32 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-##  Generated Output Files
+## Dataset Overview
 
-| File | Description |
-|------|-------------|
-| `submission.csv` | Final predictions — `text` + `toxic_probability` |
-| `dataset_overview.png` | Class distribution + text length EDA |
-| `training_results.png` | Loss curves + accuracy/ROC per epoch + confusion matrix |
-| `roc_curve.png` | Full ROC curve with AUC fill |
-| `prediction_distribution.png` | Histogram of test set predicted probabilities |
-| `xai_lime.png` | LIME token importance for 4 example inputs (Cell 12) |
-| `xai_attention.png` | Attention heatmaps for 2 example inputs (Cell 13) |
-| `./toxguard_final/` | Saved model + tokenizer (Hugging Face format) |
+[![Dataset Overview](output/dataset_overview.png)](output/dataset_overview.png)
 
+## Training Results
+
+[![Training Results](output/training_results.png)](output/training_results.png)
+
+[![ROC Curve](output/roc_curve.png)](output/roc_curve.png)
+
+## Prediction Distribution
+
+[![Prediction Distribution](output/prediction_distribution.png)](output/prediction_distribution.png)
+
+## Explainability Results
+
+### LIME Explanations
+[![LIME Explanations](output/xai_lime.png)](output/xai_lime.png)
+
+### Attention Heatmap
+[![Attention Heatmap](output/xai_attention.png)](output/xai_attention.png)
+
+
+##  Submission File
+
+[![Download submission.csv](https://img.shields.io/badge/Download-submission.csv-blue?style=for-the-badge&logo=github)](submission.csv)
 ---
 
 ##  Tech Stack
