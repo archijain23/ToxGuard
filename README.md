@@ -179,7 +179,7 @@ The sharp improvement from Epoch 1 → Epoch 2 (+0.2368 ROC-AUC) reflects the tr
 
 ---
 
-## 🔍 Explainability (XAI)
+## Explainability (XAI)
 
 One of ToxGuard's key differentiators is built-in model interpretability through two complementary techniques:
 
