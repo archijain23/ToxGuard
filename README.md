@@ -78,6 +78,11 @@ ToxGuard builds on `xlm-roberta-base`, a robust cross-lingual representation mod
 The classifier uses `AutoModelForSequenceClassification` with `num_labels=2`, making the logits directly interpretable as class scores for Non-Toxic vs. Toxic.
 
 ---
+## Dataset Overview
+
+[![Dataset Overview](output/dataset_overview.png)](output/dataset_overview.png)
+
+---
 
 ##  Full Pipeline — Flow Diagram
 
@@ -152,6 +157,19 @@ flowchart TD
 
 The sharp improvement from Epoch 1 → Epoch 2 (+0.2368 ROC-AUC) reflects the transformer backbone quickly adapting its cross-lingual representations to the toxicity classification objective. By Epoch 3, the model has converged with a slight validation loss increase but marginally better ROC-AUC — a healthy sign of generalization rather than overfitting.
 
+## Training Results
+
+[![Training Results](output/training_results.png)](output/training_results.png)
+
+[![ROC Curve](output/roc_curve.png)](output/roc_curve.png)
+
+## Prediction Distribution
+
+[![Prediction Distribution](output/prediction_distribution.png)](output/prediction_distribution.png)
+
+
+
+
 ---
 
 ##  Explainability (XAI) 
@@ -160,6 +178,15 @@ One of the most important questions in real-world content moderation is not just
 
 ---
 
+## Explainability Results
+
+### LIME Explanations
+[![LIME Explanations](output/xai_lime.png)](output/xai_lime.png)
+
+### Attention Heatmap
+[![Attention Heatmap](output/xai_attention.png)](output/xai_attention.png)
+
+---
 ### Technique 1 — LIME (Local Interpretable Model-Agnostic Explanations)
 
 **Cell 12** of the notebook.
@@ -390,28 +417,6 @@ TEST_DIR  = '/path/to/your/test/folder'
 > **Hardware note:** A CUDA GPU is strongly recommended. On a Kaggle T4/P100, full training (3 epochs) takes approximately 15–25 minutes depending on dataset size.
 
 ---
-
-## Dataset Overview
-
-[![Dataset Overview](output/dataset_overview.png)](output/dataset_overview.png)
-
-## Training Results
-
-[![Training Results](output/training_results.png)](output/training_results.png)
-
-[![ROC Curve](output/roc_curve.png)](output/roc_curve.png)
-
-## Prediction Distribution
-
-[![Prediction Distribution](output/prediction_distribution.png)](output/prediction_distribution.png)
-
-## Explainability Results
-
-### LIME Explanations
-[![LIME Explanations](output/xai_lime.png)](output/xai_lime.png)
-
-### Attention Heatmap
-[![Attention Heatmap](output/xai_attention.png)](output/xai_attention.png)
 
 
 ##  Submission File
