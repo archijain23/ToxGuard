@@ -1,11 +1,11 @@
-# 🛡️ ToxGuard — Multilingual Toxic Comment Classifier
+#  ToxGuard — Multilingual Toxic Comment Classifier
 
 > **NeuroLogic '26 · Challenge 3 · Global NLP Datathon**  
 > *Hosted by GGITS Department of AI & Machine Learning*
 
 ---
 
-## 🏆 Results at a Glance
+##  Results at a Glance
 
 | Metric | Value |
 |--------|-------|
@@ -27,7 +27,7 @@ Built end-to-end in a single Jupyter notebook — from raw data loading to a liv
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```
 ToxGuard/
@@ -40,7 +40,7 @@ ToxGuard/
 
 ---
 
-## 🧠 Model Architecture
+##  Model Architecture
 
 ToxGuard builds on `xlm-roberta-base`, a robust cross-lingual representation model trained on CommonCrawl data across 100+ languages. The architecture is extended with a binary classification head.
 
@@ -64,7 +64,7 @@ The classifier uses `AutoModelForSequenceClassification` with `num_labels=2`, ma
 
 ---
 
-## ⚙️ Full Pipeline — Cell by Cell
+##  Full Pipeline — Cell by Cell
 
 The notebook is structured as a self-contained, linear pipeline. Here is a clear walkthrough of each cell and what it does:
 
@@ -155,7 +155,7 @@ Extracts and visualizes **last-layer, head-0 attention weights** from XLM-RoBERT
 
 ### Cell 14 — Gradio Demo (with XAI)
 Launches an interactive web application where users can type any text in any language and receive:
-- A **toxicity verdict** (✅ Non-Toxic / ⚠️ Borderline / 🚨 Toxic) with probability
+- A **toxicity verdict** ( Non-Toxic / Borderline /  Toxic) with probability
 - A **visual probability bar**
 - A live **LIME XAI explanation** showing which words drove the prediction
 
@@ -165,7 +165,7 @@ demo.launch(share=True)  # Generates a public URL valid for 1 week
 
 ---
 
-## 📊 Training Results
+##  Training Results
 
 | Epoch | Training Loss | Validation Loss | ROC-AUC | Accuracy |
 |-------|--------------|----------------|---------|----------|
@@ -193,20 +193,20 @@ Together, these two layers of XAI make ToxGuard suitable for real-world deployme
 
 ---
 
-## 🌐 Multilingual Capability
+##  Multilingual Capability
 
 XLM-RoBERTa's pre-training on 100+ languages provides **zero-shot cross-lingual transfer** — the model understands toxicity patterns in languages it has never been explicitly trained on for toxicity. The Gradio demo includes examples in English, Hindi, and Spanish to demonstrate this capability.
 
 | Language | Example | Prediction |
 |----------|---------|------------|
-| English | *"I hope she gets what she deserves, stupid bitch."* | 🚨 Toxic |
-| English | *"She is one of the best actresses in Bollywood!"* | ✅ Non-Toxic |
-| Hindi | *"यह एक अच्छा काम है, बधाई हो!"* | ✅ Non-Toxic |
-| English | *"California would be a better place without all the dirty mexicans."* | 🚨 Toxic |
+| English | *"I hope she gets what she deserves, stupid bitch."* |  Toxic |
+| English | *"She is one of the best actresses in Bollywood!"* |  Non-Toxic |
+| Hindi | *"यह एक अच्छा काम है, बधाई हो!"* |  Non-Toxic |
+| English | *"California would be a better place without all the dirty mexicans."* |  Toxic |
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 
 ### On Kaggle (Recommended)
 
@@ -237,7 +237,7 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-## 📦 Generated Output Files
+##  Generated Output Files
 
 | File | Description |
 |------|-------------|
@@ -252,7 +252,7 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-## 💡 Design Decisions & Innovation Highlights
+##  Design Decisions & Innovation Highlights
 
 - **XLM-RoBERTa over multilingual BERT** — XLM-RoBERTa consistently outperforms mBERT on cross-lingual benchmarks due to its larger training corpus and improved training recipe, making it the right choice for a multilingual toxicity task.
 - **Stratified splitting** — Ensures that the toxic/non-toxic class ratio is consistent between train and validation sets, giving reliable metric estimates regardless of class imbalance.
@@ -264,7 +264,7 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Category | Technology |
 |----------|------------|
@@ -280,11 +280,25 @@ TEST_DIR  = '/path/to/your/test/folder'
 
 ---
 
-## 👤 Author
+##  Author
+
+**Ayush Tiwari**  
+*NeuroLogic '26 · Challenge 3 Submission*  
+GitHub: [@archijain23](https://github.com/ayushtiwari18)
+
 
 **Archi Jain**  
 *NeuroLogic '26 · Challenge 3 Submission*  
 GitHub: [@archijain23](https://github.com/archijain23)
+
+**Dev Kumar Sharma**  
+*NeuroLogic '26 · Challenge 3 Submission*  
+GitHub: [@archijain23](https://github.com/Lost-Alien)
+
+**Anushka Bondre**  
+*NeuroLogic '26 · Challenge 3 Submission*  
+GitHub: [@archijain23](https://github.com/Anushka-B201)
+
 
 ---
 
