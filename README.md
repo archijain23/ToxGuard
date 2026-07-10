@@ -446,7 +446,7 @@ TEST_DIR  = '/path/to/your/test/folder'
 |------|--------|
 | **Ayush Tiwari** | [@ayushtiwari18](https://github.com/ayushtiwari18) |
 | **Archi Jain** | [@archijain23](https://github.com/archijain23) |
-| **Dev Kumar Sharma** | [@Lost-Alien](https://github.com/Lost-Alien) |
+| **Dev Kumar** | [@Lost-Alien](https://github.com/Lost-Alien) |
 | **Anushka Bondre** | [@Anushka-B201](https://github.com/Anushka-B201) |
 
 *NeuroLogic '26 · Challenge 3 Submission*
